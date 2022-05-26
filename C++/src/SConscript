@@ -1,0 +1,17 @@
+import platform
+
+compiler_options = []
+target_dest = ''
+
+if platform.system() == 'Windows':
+    compiler_options = ['/EHsc', '/Ox', '/std:c++17']
+    target_dest = 'djikstras_search_Windows'
+    print('Detected Windows...')
+
+elif platform.system() == 'Linux':
+    compiler_options = ['-std=c++1z', '-O3']
+    target_dest = 'djikstras_search_Linux'
+    print('Detected Linux...')
+
+env=Environment(CXXFLAGS=compiler_options)
+env.Program(target_dest, Glob('*.cpp'))
