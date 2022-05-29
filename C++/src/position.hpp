@@ -26,6 +26,11 @@ struct Position {
         return std::to_string(x) + ':' + std::to_string(y);
     }
 
+    friend std::ostream& operator<<(std::ostream& os, const Position& p)
+    {
+        return os << std::to_string(p.x) + ':' + std::to_string(p.y);
+    }
+
     std::array<Position, 4> get_surrounding_positions() {
         return {{
             Position{x + 0, y - 1}, // north

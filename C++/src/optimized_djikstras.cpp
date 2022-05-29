@@ -81,12 +81,15 @@ vector<Position> optimized_djikstras_search(  const vector<vector<int>> &weighte
     push_heap(oheap.begin(), oheap.end(), greater_comp);
     oheap_copy.emplace(start, gscore[start]);
 
+    int count = 0;
     while ( !oheap.empty() )
     {
+        count++;
         pop_heap(oheap.begin(), oheap.end(), greater_comp);
         oheap.pop_back();
         current = oheap.front().second;
         oheap_copy.erase(current);
+        close_set.insert(current);
 
         neighbors = current.get_surrounding_positions();
 
@@ -101,22 +104,45 @@ vector<Position> optimized_djikstras_search(  const vector<vector<int>> &weighte
                 float neighbor_gscore = gscore[current] + (float)weighted_map[neighbor.y][neighbor.x] +
                                 optimized_heuristic(neighbor, current);
 
-                // if this neighbor is already on the open list with a smaller fscore, skip it
+                // if the neighbor is already on the open list check to see if the neighbor is better before updating it
                 open_iter = oheap_copy.find(neighbor);
-                if (open_iter != oheap_copy.end())
+                if (open_iter != oheap_copy.end() && neighbor_gscore < gscore[neighbor])
                 {
-                    if (open_iter->second <= neighbor_gscore)
+                    // track the node's parent
+                    came_from[neighbor] = current;
+
+                    // gscore = cost to get from start to the current position
+                    gscore[neighbor] = neighbor_gscore;
+
+                    // update the neighbors values
+                    oheap_copy[neighbor] = neighbor_gscore;
+
+
+                    // remove the old gscore
+                    for (int i = 0; i < oheap.size(); i++)
                     {
-                        continue;
+                        if (oheap[i].second == neighbor)
+                        {
+                            oheap.erase(oheap.begin() + i);
+                            break;
+                        }
                     }
-                }
-                // check if it is on the closed list
-                else if (close_set.find(neighbor) != close_set.end())
-                {
+
+                    // add the new fscore and sort
+                    oheap.emplace_back(neighbor_gscore, neighbor);
+                    make_heap(oheap.begin(), oheap.end(), greater_comp);
                     continue;
                 }
+
+                // check if it is on the closed list
+                if (close_set.find(neighbor) != close_set.end() && neighbor_gscore < gscore[neighbor])
+                {
+                    // remove neighbor from closed list
+                    close_set.erase(neighbor);
+                }
+
                 // Add to the open list
-                else
+                if (close_set.find(neighbor) == close_set.end() && open_iter == oheap_copy.end())
                 {
                     // track the node's parent
                     came_from[neighbor] = current;
@@ -131,11 +157,9 @@ vector<Position> optimized_djikstras_search(  const vector<vector<int>> &weighte
                 }
             }
         }
-
-        // add current position to the already searched list
-        close_set.insert(current);
     }
 
+    cout << "count: " << count << endl;
     // trace path back from the goal
     current = goal;
     while (current != start)

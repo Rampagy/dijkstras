@@ -37,7 +37,11 @@ int main ()
     vector<vector<int>> maze;
     generate_maze(maze);
 
+    #if defined(TEST_DJIKSTRAS)
     Position start = Position(0, 0);
+    #else // !defined(TEST_DJIKSTRAS)
+    Position start = Position((maze.front().size()-1) / 2, (maze.size()-1) / 2);
+    #endif
     Position goal = Position(maze.front().size()-1, maze.size()-1);
 
     // make sure start and end are walkable
@@ -75,7 +79,7 @@ int main ()
             #ifdef TEST_DJIKSTRAS
             for (Position p : path)
             {
-                cout << p.x << ":" << p.y << " ";
+                cout << p << " ";
             }
             cout << endl << endl;
             #endif

@@ -20,6 +20,7 @@
     #define MAP_WIDTH 500
     #define MAP_HEIGHT 500
     #define SEARCH_ITERATIONS 100
+    #define MAX_MAP_HEIGHT 10
 #endif // TEST_DJIKSTRAS
 
 
