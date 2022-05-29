@@ -14,7 +14,7 @@ void generate_maze(vector<vector<int>> &maze)
         // width
         for (int j = 0; j < MAP_WIDTH; j++)
         {
-            maze_row.push_back(rand() % 255);
+            maze_row.push_back(rand() % MAX_MAP_HEIGHT);
         }
 
         maze.push_back(maze_row);
