@@ -1,4 +1,4 @@
-# A* Implementations
+# Djikstras Implementations
 
 Implementation of the Djikstras search algorithm in multiple different languages
 
