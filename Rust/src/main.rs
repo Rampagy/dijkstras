@@ -4,6 +4,13 @@ fn main() -> Result<(), ParseIntError> {
     let mut maze: Vec<Vec<u8>> = Vec::new();
     generate_maze(500, 500, &mut maze);
 
+    for maze_row in maze {
+        for val in maze_row {
+            print!("{} ", val);
+        }
+        println!("");
+    }
+
     Ok(())
 }
 
