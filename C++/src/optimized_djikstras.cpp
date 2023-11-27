@@ -159,7 +159,6 @@ vector<Position> optimized_djikstras_search(  const vector<vector<int>> &weighte
         }
     }
 
-    cout << "count: " << count << endl;
     // trace path back from the goal
     current = goal;
     while (current != start)

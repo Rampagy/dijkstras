@@ -21,6 +21,7 @@ To compare the different languages run either `compare_languages_linux.sh` or `c
 | Language | Linux | Windows |
 |    :-:   |  :-:  |   :-:   |
 |   Java   |   |     |
-|    C++   |   |     |
+|    C++   |   | 13.18 |
 |    C#    |   |     |
 |  Python  |    |      |
+|   Rust   |   |       |
