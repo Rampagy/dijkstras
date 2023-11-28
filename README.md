@@ -1,6 +1,6 @@
-# Djikstras Implementations
+# Dijkstras Implementations
 
-Implementation of the Djikstras search algorithm in multiple different languages
+Implementation of the Dijkstras search algorithm in multiple different languages
 
 ## Installation
 
