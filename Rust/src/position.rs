@@ -5,17 +5,8 @@ use std::hash::{Hasher};
 pub struct Position {
     pub x: i32,
     pub y: i32,
-
-    state: u64,
+    pub state: u64,
 }
-
-/* constructor */
-impl Position {
-    pub fn new(x: i32, y: i32) -> Position {
-        Position{x: x, y: y, state: 0}
-    }
-}
-
 
 impl fmt::Display for Position {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -24,7 +15,7 @@ impl fmt::Display for Position {
 }
 
 impl Hasher for Position {
-    fn write(&mut self, bytes: &[u8]) {
+    fn write(&mut self, _bytes: &[u8]) {
         /* szudziks function */
         if self.x >= self.y
         {
