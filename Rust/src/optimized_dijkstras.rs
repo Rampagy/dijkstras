@@ -1,4 +1,5 @@
 use super::position::{Position};
+use std::collections::{HashSet, HashMap};
 
 #[allow(non_snake_case)]
 pub fn optimized_dijkstras_search(  weighted_map: &Vec<Vec<u8>>, start: Position, 
@@ -12,6 +13,21 @@ pub fn optimized_dijkstras_search(  weighted_map: &Vec<Vec<u8>>, start: Position
        start == goal || mapWidth < 2 || mapHeight < 2 {
         return path;
     }
+
+    /* Memory allocation */
+    let mut close_set: HashSet<Position> = HashSet::with_capacity(mapHeight * mapWidth);
+    let mut came_from: HashMap<Position, Position> = HashMap::with_capacity(mapHeight * mapWidth);
+    let mut gscore: HashMap<Position, f32> = HashMap::with_capacity(mapHeight * mapWidth);
+    let mut oheap: Vec<(f32, Position)> = Vec::with_capacity(mapWidth + mapHeight);
+    let mut oheap_copy: HashMap<Position, f32> = HashMap::with_capacity(mapHeight * mapWidth);
+
+    let mut current: Position = Position::new(0, 0);
+    let mut neighbors: [Position; 4];
+
+    /* Add initial position to the search list */
+    gscore.insert(start, 0.0);
+    oheap.push((*gscore.get(&start).unwrap(), start));
+
 
     return path;
 }
