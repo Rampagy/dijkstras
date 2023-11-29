@@ -13,12 +13,10 @@ fn main() -> Result<(), ParseIntError> {
     let mut maze: Vec<Vec<u8>> = Vec::with_capacity((MAP_HEIGHT*MAP_WIDTH) as usize);
     generate_maze(MAP_HEIGHT, MAP_WIDTH, &mut maze);
 
-    let start = position::Position{x: ((maze[0].len() / 2) - 1) as i32,
-                                   y: ((maze.len() / 2) - 1) as i32,
-                                   state: 0};
-    let goal = position::Position{x: (maze[0].len() - 1) as i32, 
-                                  y: (maze.len() - 1) as i32,
-                                  state: 0};
+    let start = position::Position::new(((maze[0].len() / 2) - 1) as i32,
+                                   ((maze.len() / 2) - 1) as i32);
+    let goal = position::Position::new((maze[0].len() - 1) as i32, 
+                                   (maze.len() - 1) as i32);
 
     println!("{}  {}", start, goal);
 

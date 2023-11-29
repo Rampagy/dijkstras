@@ -1,11 +1,12 @@
 use std::fmt;
-use std::hash::{Hasher};
+//use std::hash::{Hasher};
 
 //#[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Position {
     pub x: i32,
     pub y: i32,
-    pub state: u64,
+
+    _state: u64,
 }
 
 impl fmt::Display for Position {
@@ -14,6 +15,14 @@ impl fmt::Display for Position {
     }
 }
 
+impl Position {
+    // Constructor will pass in x and y, default state to 0
+    pub fn new(x: i32, y: i32) -> Self {
+        Self { x: x, y: y, _state: 0 }
+    }
+}
+
+/*
 impl Hasher for Position {
     fn write(&mut self, _bytes: &[u8]) {
         /* szudziks function */
@@ -31,3 +40,4 @@ impl Hasher for Position {
         self.state
     }
 }
+*/
