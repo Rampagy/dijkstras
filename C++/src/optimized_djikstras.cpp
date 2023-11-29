@@ -61,7 +61,6 @@ vector<Position> optimized_djikstras_search(  const vector<vector<int>> &weighte
 
     Position current;
     array<Position, 4> neighbors;
-    std::unordered_map<Position, float>::iterator neighbor_iter;
     std::unordered_map<Position, float>::iterator open_iter;
 
     // Memory preallocation
