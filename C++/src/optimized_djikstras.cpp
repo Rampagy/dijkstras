@@ -53,9 +53,6 @@ vector<Position> optimized_djikstras_search(  const vector<vector<int>> &weighte
         return path;
     }
 
-    // converts a Position to vertex number via: size_t index = hash_fn(current);
-    std::hash<Position> hash_fn;
-
     unordered_set<Position> close_set;
     unordered_map<Position, Position> came_from;
     unordered_map<Position, float> gscore;
