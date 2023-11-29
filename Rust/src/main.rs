@@ -1,7 +1,7 @@
 extern crate rand;
 
 use rand::Rng;
-use std::num::ParseIntError;
+use std::process::ExitCode;
 
 mod position;
 
@@ -9,7 +9,7 @@ const MAP_HEIGHT: u32 = 500;
 const MAP_WIDTH: u32 = 500;
 
 
-fn main() -> Result<(), ParseIntError> {
+fn main() -> ExitCode {
     let mut maze: Vec<Vec<u8>> = Vec::with_capacity((MAP_HEIGHT*MAP_WIDTH) as usize);
     generate_maze(MAP_HEIGHT, MAP_WIDTH, &mut maze);
 
@@ -21,7 +21,7 @@ fn main() -> Result<(), ParseIntError> {
     println!("{}  {}", start, goal);
 
 
-    Ok(())
+    ExitCode::SUCCESS
 }
 
 fn generate_maze(h: u32, w: u32, maze: &mut Vec<Vec<u8>>) {
