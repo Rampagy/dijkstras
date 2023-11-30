@@ -31,10 +31,14 @@ pub fn optimized_dijkstras_search(  weighted_map: &Vec<Vec<u8>>, start: Position
 
     /* Add initial position to the search list */
     gscore.insert(start, 0.0);
-    oheap.push(start, OrderedFloat::from(*gscore.get(&start).unwrap()));
-    oheap.push(Position::new(5, 6), OrderedFloat(1.2));
 
-    /* TODO: oheap is curerntly a max heap */
+    /* Note: gscore is multiplied by -1 before being entered into the oheap
+     *  because of how big of a pain in the ass it is to switch it from a
+     *  max heap to a min heap */
+    oheap.push(start, OrderedFloat::from(-1.0*gscore.get(&start).unwrap()));
+    oheap.push(Position::new(5, 6), OrderedFloat(-1.2));
+
+
 
     for (pos, val) in oheap.into_sorted_iter() {
         println!("{} {}", pos, val);

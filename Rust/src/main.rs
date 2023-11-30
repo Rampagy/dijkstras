@@ -9,7 +9,7 @@ mod optimized_dijkstras;
 
 const MAP_HEIGHT: u32 = 500;
 const MAP_WIDTH: u32 = 500;
-const SEARCH_ITERATIONS: u32 = 100;
+const SEARCH_ITERATIONS: u32 = 1;
 
 #[allow(non_snake_case)]
 fn main() -> ExitCode {
