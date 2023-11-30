@@ -35,15 +35,81 @@ pub fn optimized_dijkstras_search(  weighted_map: &Vec<Vec<u8>>, start: Position
     /* Note: gscore is multiplied by -1 before being entered into the oheap
      *  because of how big of a pain in the ass it is to switch it from a
      *  max heap to a min heap */
-    oheap.push(start, OrderedFloat::from(-1.0*gscore.get(&start).unwrap()));
-    oheap.push(Position::new(5, 6), OrderedFloat(-1.2));
+    oheap.push(start, OrderedFloat::from(-1.0*(*gscore.get(&start).unwrap())));
+    oheap_copy.insert(start, *gscore.get(&start).unwrap());
 
+    let mut count: u32 = 0;
+    while !oheap.is_empty() {
+        count += 1;
+        (current, _) = oheap.pop().unwrap();
+        oheap_copy.remove(&current);
+        close_set.insert(current);
 
+        neighbors = current.get_surrounding_positions();
 
-    for (pos, val) in oheap.into_sorted_iter() {
-        println!("{} {}", pos, val);
+        /* Search surrounding neighbors */
+        for neighbor in neighbors {
+            /* if the neighbor is a valid position */
+            if neighbor.x >= 0 && neighbor.y >= 0 && 
+                    neighbor.y < mapHeight as i32 && neighbor.x < mapWidth as i32 &&
+                    weighted_map[neighbor.y as usize][neighbor.x as usize] < 255 {
+                let neighbor_gscore: f32 = *gscore.get(&current).unwrap() + weighted_map[neighbor.y as usize][neighbor.x as usize] as f32 + 
+                                            optimized_heuristic(neighbor, current);
+
+                /* if the neighbor is already on the open list check to see if the neighbor is better before updating it*/
+                let in_open_list: bool = oheap_copy.contains_key(&neighbor);
+                if in_open_list && neighbor_gscore < *gscore.get(&neighbor).unwrap(){
+                    /* track the node's parent */
+                    came_from.insert(neighbor, current);
+
+                    /* gscore = cost to get from the start to the current position */
+                    gscore.entry(neighbor).and_modify(|val| *val = neighbor_gscore);
+
+                    /* update the neighbors values */
+                    oheap_copy.entry(neighbor).and_modify(|val| *val = neighbor_gscore);
+
+                    /* remove the old gscore */
+                    oheap.remove(&neighbor);
+
+                    /* Add the new fscore and sort */
+                    oheap.push(neighbor, OrderedFloat::from(-1.0*neighbor_gscore));
+                    continue;
+                }
+
+                /* check if it is on the closed list */
+                if close_set.contains(&neighbor) && neighbor_gscore < *gscore.get(&neighbor).unwrap() {
+                    /* remove neighbor from closed list */
+                    close_set.remove(&neighbor);
+                }
+
+                /* Add to the open list */
+                if close_set.contains(&neighbor) && !in_open_list {
+                    /* track the node's parent */
+                    came_from.insert(neighbor, current);
+
+                    /* gscore = cost to get rom the start to the current position */
+                    gscore.insert(neighbor, neighbor_gscore);
+
+                    /* add to the open list */
+                    oheap_copy.insert(neighbor, neighbor_gscore);
+                    oheap.push(neighbor, OrderedFloat::from(-1.0*neighbor_gscore));
+                }
+            }
+        }
     }
 
+    /* TODO: trace path back from the goal */
+    println!("{} {}", current, goal);
+    for (a, b) in came_from {
+        /* TODO: figure out why came_from is empty... */
+        println!("{} {}", a, b);
+    }
+    
 
     return path;
+}
+
+#[inline]
+fn optimized_heuristic(a: Position, b: Position) -> f32 {
+    return (((a.x - b.x) + (a.y - b.y)) as f32).abs();
 }

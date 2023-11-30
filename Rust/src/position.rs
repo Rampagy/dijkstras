@@ -9,6 +9,8 @@ pub struct Position {
     _state: u64,
 }
 
+
+
 impl fmt::Display for Position {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}:{}", self.x, self.y)
@@ -19,6 +21,13 @@ impl Position {
     // Constructor will pass in x and y, default state to 0
     pub fn new(x: i32, y: i32) -> Self {
         Self { x: x, y: y, _state: 0 }
+    }
+
+    pub fn get_surrounding_positions(&self) -> [Position; 4] {
+        return [Position::new(self.x + 0, self.y - 1),  // north
+                Position::new(self.x + 1, self.y + 0),  // east
+                Position::new(self.x + 0, self.y + 1),  // south
+                Position::new(self.x - 1, self.y + 0),] // west
     }
 }
 

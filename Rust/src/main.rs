@@ -26,12 +26,12 @@ fn main() -> ExitCode {
     maze[goal.y as usize][goal.x as usize] = 0;
 
     let mut total_time: f64 = 0.0;
-    let mut path: Vec<position::Position>;
+    let mut _path: Vec<position::Position>;
 
     for _ in 0..SEARCH_ITERATIONS {
         let start_time = Instant::now();
 
-        path = optimized_dijkstras::optimized_dijkstras_search(&maze, start, goal);
+        _path = optimized_dijkstras::optimized_dijkstras_search(&maze, start, goal);
 
         let duration = start_time.elapsed();
         total_time += duration.as_secs() as f64 + 1e-9f64*duration.subsec_nanos() as f64;
