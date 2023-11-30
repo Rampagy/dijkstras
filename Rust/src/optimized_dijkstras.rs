@@ -1,5 +1,10 @@
+extern crate priority_queue;
+extern crate ordered_float;
+
 use super::position::{Position};
 use std::collections::{HashSet, HashMap};
+use priority_queue::PriorityQueue;
+use ordered_float::OrderedFloat;
 
 #[allow(non_snake_case)]
 pub fn optimized_dijkstras_search(  weighted_map: &Vec<Vec<u8>>, start: Position, 
@@ -18,7 +23,7 @@ pub fn optimized_dijkstras_search(  weighted_map: &Vec<Vec<u8>>, start: Position
     let mut close_set: HashSet<Position> = HashSet::with_capacity(mapHeight * mapWidth);
     let mut came_from: HashMap<Position, Position> = HashMap::with_capacity(mapHeight * mapWidth);
     let mut gscore: HashMap<Position, f32> = HashMap::with_capacity(mapHeight * mapWidth);
-    let mut oheap: Vec<(f32, Position)> = Vec::with_capacity(mapWidth + mapHeight);
+    let mut oheap: PriorityQueue<Position, OrderedFloat<f32>> = PriorityQueue::with_capacity(mapWidth + mapHeight);
     let mut oheap_copy: HashMap<Position, f32> = HashMap::with_capacity(mapHeight * mapWidth);
 
     let mut current: Position = Position::new(0, 0);
@@ -26,7 +31,14 @@ pub fn optimized_dijkstras_search(  weighted_map: &Vec<Vec<u8>>, start: Position
 
     /* Add initial position to the search list */
     gscore.insert(start, 0.0);
-    oheap.push((*gscore.get(&start).unwrap(), start));
+    oheap.push(start, OrderedFloat::from(*gscore.get(&start).unwrap()));
+    oheap.push(Position::new(5, 6), OrderedFloat(1.2));
+
+    /* TODO: oheap is curerntly a max heap */
+
+    for (pos, val) in oheap.into_sorted_iter() {
+        println!("{} {}", pos, val);
+    }
 
 
     return path;
