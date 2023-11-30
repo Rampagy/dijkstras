@@ -11,7 +11,6 @@ pub fn optimized_dijkstras_search(  weighted_map: &Vec<Vec<u8>>, start: Position
                                     goal: Position ) -> Vec<Position> {
     let mapWidth: usize = weighted_map[0].len();
     let mapHeight: usize = weighted_map.len();
-    let mapSize: usize = mapWidth*mapHeight;
 
     let mut path: Vec<Position> = Vec::with_capacity(1 as usize);
     if start.x < 0 || start.y < 0 || goal.x >= mapWidth as i32 || goal.y >= mapHeight as i32 ||
@@ -26,7 +25,7 @@ pub fn optimized_dijkstras_search(  weighted_map: &Vec<Vec<u8>>, start: Position
     let mut oheap: PriorityQueue<Position, OrderedFloat<f32>> = PriorityQueue::with_capacity(mapWidth + mapHeight);
     let mut oheap_copy: HashMap<Position, f32> = HashMap::with_capacity(mapHeight * mapWidth);
 
-    let mut current: Position = Position::new(0, 0);
+    let mut current: Position;
     let mut neighbors: [Position; 4];
 
     /* Add initial position to the search list */
@@ -38,9 +37,9 @@ pub fn optimized_dijkstras_search(  weighted_map: &Vec<Vec<u8>>, start: Position
     oheap.push(start, OrderedFloat::from(-1.0*(*gscore.get(&start).unwrap())));
     oheap_copy.insert(start, *gscore.get(&start).unwrap());
 
-    let mut count: u32 = 0;
+    let mut _count: u32 = 0;
     while !oheap.is_empty() {
-        count += 1;
+        _count += 1;
         (current, _) = oheap.pop().unwrap();
         oheap_copy.remove(&current);
         close_set.insert(current);
@@ -98,7 +97,14 @@ pub fn optimized_dijkstras_search(  weighted_map: &Vec<Vec<u8>>, start: Position
         }
     }
 
-    /* TODO: trace path back from the goal */
+    /* trace path back from the goal */
+    current = goal;
+    while current != start {
+        path.push(current);
+        current = *came_from.get(&current).unwrap();
+    }
+
+    path.reverse();
 
     return path;
 }
