@@ -11,7 +11,7 @@ pub fn optimized_dijkstras_search(  weighted_map: &Vec<Vec<u8>>, start: Position
                                     goal: Position ) -> Vec<Position> {
     let mapWidth: usize = weighted_map[0].len();
     let mapHeight: usize = weighted_map.len();
-    let mapSizeL: usize = mapWidth*mapHeight;
+    let mapSize: usize = mapWidth*mapHeight;
 
     let mut path: Vec<Position> = Vec::with_capacity(1 as usize);
     if start.x < 0 || start.y < 0 || goal.x >= mapWidth as i32 || goal.y >= mapHeight as i32 ||
@@ -83,7 +83,7 @@ pub fn optimized_dijkstras_search(  weighted_map: &Vec<Vec<u8>>, start: Position
                 }
 
                 /* Add to the open list */
-                if close_set.contains(&neighbor) && !in_open_list {
+                if !close_set.contains(&neighbor) && !in_open_list {
                     /* track the node's parent */
                     came_from.insert(neighbor, current);
 
@@ -99,12 +99,6 @@ pub fn optimized_dijkstras_search(  weighted_map: &Vec<Vec<u8>>, start: Position
     }
 
     /* TODO: trace path back from the goal */
-    println!("{} {}", current, goal);
-    for (a, b) in came_from {
-        /* TODO: figure out why came_from is empty... */
-        println!("{} {}", a, b);
-    }
-    
 
     return path;
 }
