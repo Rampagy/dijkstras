@@ -1,7 +1,7 @@
 extern crate priority_queue;
 extern crate ordered_float;
 
-use super::position::{Position};
+use super::position::Position;
 use std::collections::{HashSet, HashMap};
 use priority_queue::PriorityQueue;
 use ordered_float::OrderedFloat;

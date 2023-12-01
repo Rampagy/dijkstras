@@ -1,8 +1,7 @@
-extern crate rand;
+extern crate fastrand;
 
-use rand::Rng;
 use std::process::ExitCode;
-use std::time::{Instant};
+use std::time::Instant;
 
 mod position;
 mod optimized_dijkstras;
@@ -49,13 +48,13 @@ fn main() -> ExitCode {
 
 fn generate_maze(maze: &mut Vec<Vec<u8>>) {
     maze.reserve(MAP_HEIGHT as usize);
+
     // height
     for _ in 0..MAP_HEIGHT {
-        let mut maze_row: Vec<u8> = Vec::new();
-        maze_row.reserve(MAP_WIDTH as usize);
+        let mut maze_row: Vec<u8> = Vec::with_capacity(MAP_WIDTH as usize);
         // width
         for _ in 0..MAP_WIDTH {
-            maze_row.push(rand::thread_rng().gen_range(0..2));
+            maze_row.push(fastrand::u8(0..2));
         }
 
         maze.push(maze_row);
