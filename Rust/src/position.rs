@@ -8,12 +8,12 @@ pub struct Position {
 }
 
 
-
 impl fmt::Display for Position {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}:{}", self.x, self.y)
     }
 }
+
 
 impl Position {
     // Constructor will pass in x and y, default state to 0
@@ -29,13 +29,16 @@ impl Position {
     }
 }
 
+
 impl PartialEq for Position {
     fn eq(&self, other: &Self) -> bool {
         self.x == other.x && self.y == other.y
     }
 }
 
+
 impl Eq for Position {}
+
 
 /* https://stackoverflow.com/questions/77588838/how-to-create-a-custom-hash-function-in-rust */
 /* https://www.reddit.com/r/rust/comments/184xnxo/hey_rustaceans_got_a_question_ask_here_482023/kbmj1xb/ */
