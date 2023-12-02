@@ -24,4 +24,4 @@ To compare the different languages run either `compare_languages_linux.sh` or `c
 |    C++   |   | 13.18 |
 |    C#    |   |     |
 |  Python  |    |      |
-|   Rust   |   |       |
+|   Rust   |   | 22.20 |
