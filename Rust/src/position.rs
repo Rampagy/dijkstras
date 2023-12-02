@@ -1,12 +1,10 @@
 use std::fmt;
-//use std::hash::{Hasher};
+use std::hash::{Hash, Hasher};
 
-#[derive(Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone)]
 pub struct Position {
     pub x: i32,
     pub y: i32,
-
-    _state: u64,
 }
 
 
@@ -20,7 +18,7 @@ impl fmt::Display for Position {
 impl Position {
     // Constructor will pass in x and y, default state to 0
     pub fn new(x: i32, y: i32) -> Self {
-        Self { x: x, y: y, _state: 0 }
+        Self { x: x, y: y }
     }
 
     pub fn get_surrounding_positions(&self) -> [Position; 4] {
@@ -31,24 +29,30 @@ impl Position {
     }
 }
 
-/* TODO: Implement custom hash function */
+impl PartialEq for Position {
+    fn eq(&self, other: &Self) -> bool {
+        self.x == other.x && self.y == other.y
+    }
+}
 
-/*
-impl Hasher for Position {
-    fn write(&mut self, _bytes: &[u8]) {
+impl Eq for Position {}
+
+/* https://stackoverflow.com/questions/77588838/how-to-create-a-custom-hash-function-in-rust */
+/* https://www.reddit.com/r/rust/comments/184xnxo/hey_rustaceans_got_a_question_ask_here_482023/kbmj1xb/ */
+impl Hash for Position {
+    fn hash<H: Hasher>(&self, _state: &mut H) {
+        let x: u64 = self.x.abs() as u64;
+        let y: u64 = self.y.abs() as u64;
+        let mut _hash_val: u64 = 0;
+
         /* szudziks function */
-        if self.x >= self.y
+        if x >= y
         {
-            self.state = self.x as u64 * self.x as u64 + self.x as u64 + self.y as u64;
+            _hash_val = x * x + x + y;
         }
         else
         {
-            self.state = self.x as u64 + self.y as u64 * self.y as u64;
+            _hash_val = x + y * y;
         }
     }
-
-    fn finish(&self) -> u64 {
-        self.state
-    }
 }
-*/
