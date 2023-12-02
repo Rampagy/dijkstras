@@ -43,19 +43,20 @@ impl Eq for Position {}
 /* https://stackoverflow.com/questions/77588838/how-to-create-a-custom-hash-function-in-rust */
 /* https://www.reddit.com/r/rust/comments/184xnxo/hey_rustaceans_got_a_question_ask_here_482023/kbmj1xb/ */
 impl Hash for Position {
-    fn hash<H: Hasher>(&self, _state: &mut H) {
-        let x: u64 = self.x.abs() as u64;
-        let y: u64 = self.y.abs() as u64;
-        let mut _hash_val: u64 = 0;
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        assert!(self.x >= 0);
+        assert!(self.y >= 0);
 
-        /* szudziks function */
-        if x >= y
-        {
-            _hash_val = x * x + x + y;
-        }
-        else
-        {
-            _hash_val = x + y * y;
-        }
+        let x: u64 = self.x as u64;
+        let y: u64 = self.y as u64;
+
+        /* szudzik's pairing function */
+        let hash_val: u64 = if x >= y {
+            x * x + x + y
+        } else {
+            x + y * y
+        };
+
+        state.write_u64(hash_val);
     }
 }
