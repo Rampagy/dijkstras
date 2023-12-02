@@ -175,3 +175,35 @@ fn generate_maze(maze: &mut Vec<Vec<u8>>) {
         maze.push(maze_row);
     }
 }
+
+
+#[cfg(test)] #[allow(non_snake_case)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_dijkstras_search() {
+        let maze: Vec<Vec<u8>> = vec![
+            vec![1,   1,    1,    1,    1],
+            vec![1,   0,    1,    1,    1],
+            vec![1,   0,    0,  255,    1],
+            vec![1, 255,  255,  255,    1],
+            vec![1,   1,    1,    1,    1],
+        ];
+
+        let start: Position = Position::new(0, 0);
+        let goal: Position = Position::new((maze[0].len() - 1) as i32, (maze.len() - 1) as i32);
+
+        let path: Vec<Position> = optimized_dijkstras_search(&maze, start, goal);
+
+        assert_eq!(path.len(), 8);
+        assert_eq!(path[0], Position::new(1, 0));
+        assert_eq!(path[1], Position::new(1, 1));
+        assert_eq!(path[2], Position::new(2, 1));
+        assert_eq!(path[3], Position::new(3, 1));
+        assert_eq!(path[4], Position::new(4, 1));
+        assert_eq!(path[5], Position::new(4, 2));
+        assert_eq!(path[6], Position::new(4, 3));
+        assert_eq!(path[7], Position::new(4, 4));
+    }
+}
