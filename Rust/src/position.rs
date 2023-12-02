@@ -1,5 +1,5 @@
 use std::fmt;
-use std::hash::{Hash, Hasher};
+use std::hash::{BuildHasher, Hash, Hasher};
 
 #[derive(Copy, Clone)]
 pub struct Position {
@@ -22,10 +22,12 @@ impl Position {
     }
 
     pub fn get_surrounding_positions(&self) -> [Position; 4] {
-        return [Position::new(self.x + 0, self.y - 1),  // north
-                Position::new(self.x + 1, self.y + 0),  // east
-                Position::new(self.x + 0, self.y + 1),  // south
-                Position::new(self.x - 1, self.y + 0),] // west
+        return [
+            Position::new(self.x + 0, self.y - 1),  // north
+            Position::new(self.x + 1, self.y + 0),  // east
+            Position::new(self.x + 0, self.y + 1),  // south
+            Position::new(self.x - 1, self.y + 0),  // west
+        ]
     }
 }
 
@@ -58,5 +60,31 @@ impl Hash for Position {
         };
 
         state.write_u64(hash_val);
+    }
+}
+
+pub struct PositionBuildHasher;
+
+impl BuildHasher for PositionBuildHasher {
+    type Hasher = PositionHasher;
+
+    fn build_hasher(&self) -> Self::Hasher {
+        PositionHasher(0)
+    }
+}
+
+pub struct PositionHasher(u64);
+
+impl Hasher for PositionHasher {
+    fn write(&mut self, bytes: &[u8]) {
+        self.0 = u64::from_ne_bytes(bytes.try_into().expect("Can only write 8 byte values"));
+    }
+
+    fn finish(&self) -> u64 {
+        self.0
+    }
+
+    fn write_u64(&mut self, i: u64) {
+        self.0 = i;
     }
 }

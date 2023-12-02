@@ -9,7 +9,7 @@ use std::time::Instant;
 use std::collections::{HashSet, HashMap};
 use priority_queue::PriorityQueue;
 use ordered_float::OrderedFloat;
-use position::Position;
+use position::{Position, PositionBuildHasher};
 
 const MAP_HEIGHT: u32 = 500;
 const MAP_WIDTH: u32 = 500;
@@ -65,11 +65,11 @@ pub fn optimized_dijkstras_search(  weighted_map: &Vec<Vec<u8>>, start: Position
     }
 
     /* Memory allocation */
-    let mut close_set: HashSet<Position> = HashSet::with_capacity(mapHeight * mapWidth);
-    let mut came_from: HashMap<Position, Position> = HashMap::with_capacity(mapHeight * mapWidth);
-    let mut gscore: HashMap<Position, f32> = HashMap::with_capacity(mapHeight * mapWidth);
-    let mut oheap: PriorityQueue<Position, OrderedFloat<f32>> = PriorityQueue::with_capacity(mapWidth + mapHeight);
-    let mut oheap_copy: HashMap<Position, f32> = HashMap::with_capacity(mapHeight * mapWidth);
+    let mut close_set: HashSet<Position, PositionBuildHasher> = HashSet::with_capacity_and_hasher(mapHeight * mapWidth, PositionBuildHasher);
+    let mut came_from: HashMap<Position, Position, PositionBuildHasher> = HashMap::with_capacity_and_hasher(mapHeight * mapWidth, PositionBuildHasher);
+    let mut gscore: HashMap<Position, f32, PositionBuildHasher> = HashMap::with_capacity_and_hasher(mapHeight * mapWidth, PositionBuildHasher);
+    let mut oheap: PriorityQueue<Position, OrderedFloat<f32>, PositionBuildHasher> = PriorityQueue::with_capacity_and_hasher(mapWidth + mapHeight, PositionBuildHasher);
+    let mut oheap_copy: HashMap<Position, f32, PositionBuildHasher> = HashMap::with_capacity_and_hasher(mapHeight * mapWidth, PositionBuildHasher);
 
     let mut current: Position;
     let mut neighbors: [Position; 4];
