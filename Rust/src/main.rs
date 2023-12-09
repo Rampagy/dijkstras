@@ -33,11 +33,11 @@ fn main() -> ExitCode {
     let mut _path: Vec<Position>;
 
     for _ in 0..SEARCH_ITERATIONS {
-        let start_time = Instant::now();
+        let start_time: Instant = Instant::now();
 
         _path = optimized_dijkstras_search(&maze, start, goal);
 
-        let duration = start_time.elapsed();
+        let duration: std::time::Duration = start_time.elapsed();
         total_time += duration.as_secs() as f64 + 1e-9f64*duration.subsec_nanos() as f64;
 
         /* generate new maze every time */
@@ -155,6 +155,7 @@ pub fn optimized_dijkstras_search(  weighted_map: &Vec<Vec<u8>>, start: Position
     return path;
 }
 
+
 #[inline]
 fn optimized_heuristic(a: Position, b: Position) -> f32 {
     return (((a.x - b.x) + (a.y - b.y)) as f32).abs();
@@ -205,5 +206,13 @@ mod tests {
         assert_eq!(path[5], Position::new(4, 2));
         assert_eq!(path[6], Position::new(4, 3));
         assert_eq!(path[7], Position::new(4, 4));
+    }
+
+    #[test]
+    fn test_position_hash() {
+        assert_eq!(position::szudzik_pairing(0, 0), 0);
+        assert_eq!(position::szudzik_pairing(0, 1), 1);
+        assert_eq!(position::szudzik_pairing(1, 0), 2);
+        assert_eq!(position::szudzik_pairing(1, 1), 3);
     }
 }
